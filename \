@@ -1,0 +1,16 @@
+window.onload = function(){
+  console.log("Happening");
+  var logInButton = document.getElementById('log-in-button');
+  var email = document.getElementById('username-box');
+  var password = document.getElementById('password-box');
+  logInButton.onclick = function(){
+    var request = new XMLHttpRequest();
+    request.open("GET", "/login", false);
+    console.log(email.value + " " + password.value);
+    request.send(email.value + "" + password.value);
+    var div = document.createElement('div');
+    div.innerHTML = request.responseText;
+    document.body.appendChild(div);
+  };
+};
+
