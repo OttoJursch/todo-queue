@@ -1,1 +1,1 @@
-web: java $JVM_OPTS -cp target/todo-queue-standalone.jar clojure.main -m todo-queue.web
+web: lein with-profile trampoline ring server-headless

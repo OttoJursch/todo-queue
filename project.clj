@@ -10,6 +10,7 @@
                  [crypto-password "0.1.3"]]
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler todo-queue.handler/app}
+  :uberjar-name "todo-queue-standalone.jar"
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                         [ring-mock "0.1.5"]]}})
