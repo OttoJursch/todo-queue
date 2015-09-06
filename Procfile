@@ -1,1 +1,1 @@
-web: java $JVM_OPTS -cp target/todo-queue-standalone.jar clojure.app -m todo-queue.handler
+web: java $JVM_OPTS -cp target/todo-queue-standalone.jar clojure.main -m todo-queue.web
