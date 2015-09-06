@@ -3,7 +3,7 @@
             [compojure.handler :refer [site]]
             [compojure.route :as route]
             [clojure.java.io :as io]
-            [rind.adapter.jetty :as jetty]
+            [ring.adapter.jetty :as jetty]
             [environ.core :refer [env]]
             [todo-queue.handler :as handler]))
 
