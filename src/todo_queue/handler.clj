@@ -19,16 +19,17 @@
 )
 
 (defn account-create-success [id password]
-  (db/insert! (env :database_url "postgres://localhost:5432") :todo_queue_users {:email id :password (pw/encrypt password)})
+  (db/insert! (env :database-url "postgres://localhost:5432") :todo_queue_users {:email id :password (pw/encrypt password)})
   (response/redirect "password-is-good")
 )
 
 (defn create-account [id password]
   ;First check if email account already exists
   ;If it doesn't, pass (password/encrypt password) and email to sql database
-  (if (= "" (get (db/query ["SELECT email FROM todo_queue_users WHERE email = ?" id]) :email))
-  (account-create-success id password)     
-  (response/redirect "Account Already Exists"))
+  (println (db/query ["SELECT email FROM todo_queue_users WHERE email = ?" id]))
+  ;;(if (= "" (get (db/query ["SELECT email FROM todo_queue_users WHERE email = ?" id]) :email))
+  ;;(account-create-success id password)     
+  ;;(response/redirect "Account Already Exists"))
 ) 
 
 (defroutes app-routes
