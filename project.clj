@@ -5,7 +5,6 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [compojure "1.3.1"]
                  [ring/ring-defaults "0.1.2"]
-                 [ring/ring-jetty-adapter "1.4.0"]
                  [environ "1.0.0"]
                  [crypto-password "0.1.3"]
                  [org.clojure/java.jdbc "0.3.5"]

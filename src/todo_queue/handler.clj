@@ -5,7 +5,8 @@
             [ring.util.response :as response]
             [crypto.password.scrypt :as pw]
             [clojure.java.jdbc :as db]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [environ.core :refer [env]]))
 
 (defn password-check [id password]
   (println "Posting up " id " " password)
