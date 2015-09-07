@@ -6,7 +6,7 @@ window.onload = function(){
   var password = document.getElementById('password-box');
   logInButton.onclick = function(){
     var request = new XMLHttpRequest();
-    request.open("GET", "/login/:" + email.value + "/:" + password.value, false);
+    request.open("GET", "/login/:" + email.value + ":" + password.value, false);
     console.log(email.value + " " + password.value);
     request.send();
     if(request.responseText === 'password-is-good'){
@@ -18,7 +18,7 @@ window.onload = function(){
   };
   signUpButton.onclick = function(){
     var request = new XMLHttpRequest();
-    request.open("GET", "/signup/:" + email.value + "/:" + password.value, false);
+    request.open("GET", "/signup/:" + email.value + ":" + password.value, false);
     request.send();
     console.log(request.responseText);
     if(request.responseText === 'password-is-good'){
