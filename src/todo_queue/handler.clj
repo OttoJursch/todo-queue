@@ -35,7 +35,7 @@
 (defroutes app-routes
   (GET "/" [] (response/redirect "index.html"))
   (GET "/login/:id/:password" [id password] (password-check id password))
-  (GET "/signup/:id/:password" [id password] (create-account id password))
+  (GET "/signup/:id:password" [id password] (create-account id password))
   (route/not-found "Not Found"))
 
 (def app
