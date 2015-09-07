@@ -12,14 +12,14 @@
   (println "Posting up " id " " password)
   ;; Via sql get password for provided id
   ;;(if (= (password/decrypt from-sql) password)
-  (if (= password (pw/decrypt (get (db/query ["SELECT password FROM todo_queue_users WHERE email = ?" id]) :password)))
+  (if (= password (pw/check (get (db/query ["SELECT password FROM todo_queue_users WHERE email = ?" id]) :password)))
     (response/redirect "password-is-good")
   (response/redirect "Incorrect username or password"))
   ;;(response/redirect "bad username or password"))
 )
 
 (defn account-create-success [id password]
-  (db/insert (env :database_url "postgres://localhost:5432") :todo_queue_users {:email id :password (pw/encrypt password)})
+  (db/insert! (env :database_url "postgres://localhost:5432") :todo_queue_users {:email id :password (pw/encrypt password)})
   (response/redirect "password-is-good")
 )
 
