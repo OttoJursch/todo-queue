@@ -6,7 +6,8 @@
             [crypto.password.scrypt :as pw]
             [clojure.java.jdbc :as db]
             [clojure.data.json :as json]
-            [environ.core :refer [env]]))
+            [environ.core :refer [env]]
+            [clojure.string :as st]))
 
 (defn password-check [id password]
   (println "Posting up " id " " password)
@@ -23,7 +24,7 @@
   (response/redirect "password-is-good")
 )
 
-(defn create-account [id password]
+(defn create-account [[id password]]
   ;First check if email account already exists
   ;If it doesn't, pass (password/encrypt password) and email to sql database
   (println (db/query (env :database-url "postgres//localhost:5432") ["SELECT email FROM todo_queue_users WHERE email = ?" id]))
@@ -35,7 +36,7 @@
 (defroutes app-routes
   (GET "/" [] (response/redirect "index.html"))
   (GET "/login/:id/:password" [id password] (password-check id password))
-  (GET "/signup" [& query] (println query))
+  (GET "/signup" [& query] (->> (get query :param) (st/split #" ") (create-account)))
   (route/not-found "Not Found"))
 
 (def app
