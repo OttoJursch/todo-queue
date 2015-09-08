@@ -36,7 +36,7 @@
 (defroutes app-routes
   (GET "/" [] (response/redirect "index.html"))
   (GET "/login/:id/:password" [id password] (password-check id password))
-  (GET "/signup" [& query] (->> (get query :param) (st/split #" ") (create-account)))
+  (GET "/signup" [& query] (-> (get query :param) (st/split #" ") (create-account)))
   (route/not-found "Not Found"))
 
 (def app
