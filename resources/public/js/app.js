@@ -18,7 +18,7 @@ window.onload = function(){
   };
   signUpButton.onclick = function(){
     var request = new XMLHttpRequest();
-    request.open("GET", "/signup?id=" + email.value + "?password=" + password.value, false);
+    request.open("GET", "/signup?id=" + email.value + "password=" + password.value, false);
     request.send();
     console.log(request.responseText);
     if(request.responseText === 'password-is-good'){
