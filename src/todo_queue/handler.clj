@@ -35,7 +35,7 @@
 (defroutes app-routes
   (GET "/" [] (response/redirect "index.html"))
   (GET "/login/:id/:password" [id password] (password-check id password))
-  (GET "/signup" {query :query-string} (println query))
+  (GET "/signup" [& query] (println query))
   (route/not-found "Not Found"))
 
 (def app
