@@ -9,12 +9,20 @@
             [environ.core :refer [env]]
             [clojure.string :as st]))
 
-(defn password-check [id password]
+
+(defn account-found [id]
+  (-> 
+     (db/query (env :database-url "postgres//localhost:5432") ["SELECT resources, tasks FROM todo_queue_users WHERE email =?" id])
+     (json/write-str)
+     (response/redirect))
+)
+
+(defn password-check [[id password]]
   (println "Posting up " id " " password)
   ;; Via sql get password for provided id
   ;;(if (= (password/decrypt from-sql) password)
   (if (= password (pw/check (get (db/query ["SELECT password FROM todo_queue_users WHERE email = ?" id]) :password)))
-    (response/redirect "password-is-good")
+    (account-found id);; (response/redirect "password-is-good")
   (response/redirect "Incorrect username or password"))
   ;;(response/redirect "bad username or password"))
 )
@@ -33,10 +41,14 @@
   ;;(response/redirect "Account Already Exists"))
 ) 
 
+(defn destructure-param [query]
+  (-> (get query :param) (st/split #" "))
+)
+
 (defroutes app-routes
   (GET "/" [] (response/redirect "index.html"))
-  (GET "/login/:id/:password" [id password] (password-check id password))
-  (GET "/signup" [& query] (-> (get query :param) (st/split #" ") (create-account)))
+  (GET "/login" [& query] (password-check (destructue-param query)))
+  (GET "/signup" [& query] (create-account (destructure-param query)))
   (route/not-found "Not Found"))
 
 (def app
