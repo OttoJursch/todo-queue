@@ -5,24 +5,8 @@ window.onload = function(){
   var signUpButton = document.getElementById('sign-up-button');
   var email = document.getElementById('username-box');
   var password = document.getElementById('password-box');
-  logInButton.onclick = function(){
-    var request = new XMLHttpRequest();
-    request.open("GET", "/login/:" + email.value + ":" + password.value, false);
-    console.log(email.value + " " + password.value);
-    request.send();
-    if(request.responseText === 'password-is-good'){
-      return true;
-    }else{
-      console.log("Incorrect password");
-      return false;
-    }
-  };
-  signUpButton.onclick = function(){
-    var request = new XMLHttpRequest();
-    request.open("GET", "/signup?param=" + email.value + " " + password.value, false);
-    request.send();
-    console.log(request.responseText);
-    if(request.responseText !== 'Error: Account Already Taken'){
+  var loadQueue = function(responseText){
+    if(responseText !== 'Error: Account Already Taken'){
       allData = JSON.parse(request.responseText);
       var htmlString = '<div><h1>Create a New Task</h1><h3>Select the Resources you will need</h3>';
       var secondString = '';
@@ -44,8 +28,20 @@ window.onload = function(){
       document.body.innerHTML = htmlString;
     }else{
       console.log("Incorrect password");
-      return false;
     }
+  };
+  logInButton.onclick = function(){
+    var request = new XMLHttpRequest();
+    request.open("GET", "/login/:" + email.value + ":" + password.value, false);
+    console.log(email.value + " " + password.value);
+    request.send();
+    loadQueue(request.responseText);
+  };
+  signUpButton.onclick = function(){
+    var request = new XMLHttpRequest();
+    request.open("GET", "/signup?param=" + email.value + " " + password.value, false);
+    request.send();
+    loadQueue(request.responseText);
   };
 };
 
