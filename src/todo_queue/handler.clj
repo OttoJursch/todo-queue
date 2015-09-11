@@ -35,7 +35,7 @@
 (defn create-account [[id password]]
   ;First check if email account already exists
   ;If it doesn't, pass (password/encrypt password) and email to sql database
-  ;(println (db/query (env :database-url "postgres//localhost:5432") ["SELECT email FROM todo_queue_users WHERE email = ?" id]))
+  (println (db/query (env :database-url "postgres//localhost:5432") ["SELECT email FROM todo_queue_users WHERE email = ?" id]))
 
   ;;(if (= "" (get (db/query ["SELECT email FROM todo_queue_users WHERE email = ?" id]) :email))
   ;;(account-create-success id password)     
