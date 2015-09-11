@@ -25,7 +25,7 @@ window.onload = function(){
       htmlString += secondString + "<input id='all-resources=check' type='checkbox' value='all-resources' />All Resources<br>";
       htmlString += "<input type='number' id='number-box-2' placeholder='00'/>";
       htmlString += "<input type='text' id='time-unit-combobox-2' list='units'><datalist id='units'><option>hours</option><options>Minutes</option></datalist></input>";
-      htmlString += "<button id='get-new-task' type='button'>Get New Task</button>";
+      htmlString += "<button id='get-new-task' type='button'>Get New Task</button></div>";
       document.body.innerHTML = htmlString;
     }else{
       console.log("Incorrect password");
@@ -33,14 +33,14 @@ window.onload = function(){
   };
   logInButton.onclick = function(){
     var request = new XMLHttpRequest();
-    request.open("GET", "/login/:" + email.value + ":" + password.value, false);
+    request.open("GET", "/login?email=" + email.value + "&password=" + password.value, false);
     console.log(email.value + " " + password.value);
     request.send();
     loadQueue(request.responseText);
   };
   signUpButton.onclick = function(){
     var request = new XMLHttpRequest();
-    request.open("GET", "/signup?param=" + email.value + " " + password.value, false);
+    request.open("GET", "/signup?email=" + email.value + "&password=" + password.value, false);
     request.send();
     loadQueue(request.responseText);
   };
