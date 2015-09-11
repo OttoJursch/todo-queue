@@ -6,7 +6,7 @@ window.onload = function(){
   var email = document.getElementById('username-box');
   var password = document.getElementById('password-box');
   var loadQueue = function(responseText){
-    if(responseText !== 'Error: Account Already Taken'){
+    if(responseText !== 'Error'){
       allData = JSON.parse(responseText);
       var htmlString = '<div><h1>Create a New Task</h1><h3>Select the Resources you will need</h3>';
       var secondString = '';
