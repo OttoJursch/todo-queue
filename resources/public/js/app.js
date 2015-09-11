@@ -7,7 +7,7 @@ window.onload = function(){
   var password = document.getElementById('password-box');
   var loadQueue = function(responseText){
     if(responseText !== 'Error: Account Already Taken'){
-      allData = JSON.parse(request.responseText);
+      allData = JSON.parse(responseText);
       var htmlString = '<div><h1>Create a New Task</h1><h3>Select the Resources you will need</h3>';
       var secondString = '';
      "<input type='checkbox' name='option'"+x+" value='"+allData.resources[x]+"/>"+allData.resources+"<br>";
