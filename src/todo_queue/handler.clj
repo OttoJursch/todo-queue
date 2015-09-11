@@ -13,7 +13,9 @@
 (defn account-found [id]
   (-> 
      (db/query (env :database-url "postgres//localhost:5432") ["SELECT resources, tasks FROM todo_queue_users WHERE email =?" id])
+     (println)
      (json/write-str)
+     (println)
      (response/redirect))
 )
 
