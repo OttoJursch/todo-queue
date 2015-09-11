@@ -48,7 +48,7 @@
   (GET "/" [] (response/redirect "index.html"))
   (GET "/login" [& query] (password-check (destructure-param query)))
   (GET "/signup" [& query] (create-account (destructure-param query)))
-  (route/not-found "Not Found"))
+  (route/not-found "gobbledygook"))
 
 (def app
   (wrap-defaults app-routes site-defaults))
