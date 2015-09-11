@@ -35,7 +35,8 @@
 (defn create-account [[id password]]
   ;First check if email account already exists
   ;If it doesn't, pass (password/encrypt password) and email to sql database
-  (println (db/query (env :database-url "postgres//localhost:5432") ["SELECT email FROM todo_queue_users WHERE email = ?" id]))
+  ;(println (db/query (env :database-url "postgres//localhost:5432") ["SELECT email FROM todo_queue_users WHERE email = ?" id]))
+
   ;;(if (= "" (get (db/query ["SELECT email FROM todo_queue_users WHERE email = ?" id]) :email))
   ;;(account-create-success id password)     
   ;;(response/redirect "Account Already Exists"))
@@ -47,7 +48,7 @@
 
 (defroutes app-routes
   (GET "/" [] (response/redirect "index.html"))
-  (GET "/login" [& query] (password-check (destructue-param query)))
+  (GET "/login" [& query] (password-check (destructure-param query)))
   (GET "/signup" [& query] (create-account (destructure-param query)))
   (route/not-found "Not Found"))
 
