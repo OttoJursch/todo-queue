@@ -17,7 +17,7 @@
      (response/redirect))
 )
 
-(defn password-check [[id password]]
+(defn password-check [id password]
   (println "Posting up " id " " password)
   ;; Via sql get password for provided id
   ;;(if (= (password/decrypt from-sql) password)
@@ -32,7 +32,7 @@
   (account-found id)
 )
 
-(defn create-account [[id password]]
+(defn create-account [id password]
   ;First check if email account already exists
   ;If it doesn't, pass (password/encrypt password) and email to sql database
   (if (not= "()" (str (db/query (env :database-url "postgres://localhost:5432") ["SELECT email FROM todo_queue_users WHERE email = ?" id])))
@@ -46,8 +46,9 @@
 
 (defroutes app-routes
   (GET "/" [] (response/redirect "index.html"))
-  (GET "/login" [& query] (password-check (destructure-param query)))
-  (GET "/signup" [& query] (create-account (destructure-param query)))
+  (GET "/login" [& query] (password-check (get query "email") (get query "password")))
+  (GET "/signup" [& query] (create-account (get query "email") (get query "password"))
+  (ANY "*" {uri :uri} (println uri))
   (route/not-found "gobbledygook"))
 
 (def app
