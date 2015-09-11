@@ -12,10 +12,8 @@
 
 (defn account-found [id]
   (-> 
-     (db/query (env :database-url "postgres//localhost:5432") ["SELECT resources, tasks FROM todo_queue_users WHERE email =?" id])
-     (println)
+     (db/query (env :database-url "postgres//localhost:5432") ["SELECT email, resources, tasks FROM todo_queue_users WHERE email =?" id])
      (json/write-str)
-     (println)
      (response/redirect))
 )
 
@@ -38,7 +36,7 @@
   ;First check if email account already exists
   ;If it doesn't, pass (password/encrypt password) and email to sql database
   (if (not= "()" (str (db/query (env :database-url "postgres://localhost:5432") ["SELECT email FROM todo_queue_users WHERE email = ?" id])))
-    (account-create-success id password)     
+    (response/redirect (json/write-str {:email id :resources [] :tasks []}))     
   (response/redirect "Error"))
 ) 
 
