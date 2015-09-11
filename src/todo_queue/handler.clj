@@ -23,13 +23,13 @@
   ;;(if (= (password/decrypt from-sql) password)
   (if (= password (pw/check (get (db/query ["SELECT password FROM todo_queue_users WHERE email = ?" id]) :password)))
     (account-found id);; (response/redirect "password-is-good")
-  (response/redirect "Incorrect username or password"))
+  (response/redirect "Error"))
   ;;(response/redirect "bad username or password"))
 )
 
 (defn account-create-success [id password]
   (db/insert! (env :database-url "postgres://localhost:5432") :todo_queue_users {:email id :password (pw/encrypt password)})
-  (response/redirect "password-is-good")
+  (account-found id)
 )
 
 (defn create-account [[id password]]
@@ -37,7 +37,7 @@
   ;If it doesn't, pass (password/encrypt password) and email to sql database
   (if (not= "()" (str (db/query (env :database-url "postgres://localhost:5432") ["SELECT email FROM todo_queue_users WHERE email = ?" id])))
     (account-create-success id password)     
-  (response/redirect "Account Already Exists"))
+  (response/redirect "Error"))
 ) 
 
 (defn destructure-param [query]
