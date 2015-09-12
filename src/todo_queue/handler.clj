@@ -47,7 +47,7 @@
 (defroutes app-routes
   (GET "/" [] (response/redirect "index.html"))
   (GET "/login" [& query] (password-check (get query "email") (get query "password")))
-  (GET "/signup" [& query] (create-account (get query "email") (get query "password"))
+  (GET "/signup" [& query] (create-account (get query "email") (get query "password")))
   (ANY "*" {uri :uri} (println uri))
   (route/not-found "gobbledygook"))
 
