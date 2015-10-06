@@ -35,19 +35,17 @@
 (defn create-account [id password]
   ;First check if email account already exists
   ;If it doesn't, pass (password/encrypt password) and email to sql database
-  (if (not= "()" (str (db/query (env :database-url "postgres://localhost:5432") ["SELECT email FROM todo_queue_users WHERE email = ?" id])))
+  (println (env :database-url))
+  (println(db/query (env :database-url "postgres:///localhost:5432") ["SELECT id FROM todo_queue_users WHERE id = ?" id]))
+  (if (not= "()" (str (db/query (env :database-url "postgres:///localhost:5432") ["SELECT id FROM todo_queue_users WHERE id = ?" id])))
     (response/redirect (json/write-str {:email id :resources [] :tasks []}))     
   (response/redirect "Error"))
 ) 
 
-(defn destructure-param [query]
-  (-> (get query :param) (st/split #" "))
-)
-
 (defroutes app-routes
   (GET "/" [] (response/redirect "index.html"))
-  (GET "/login" [& query] (password-check (get query "email") (get query "password")))
-  (GET "/signup" [& query] (create-account (get query "email") (get query "password")))
+  (GET "/login" [& query] (password-check (get query "id") (get query "password")))
+  (GET "/signup" [& query] (create-account (get query "id") (get query "password")))
   (ANY "*" {uri :uri} (println uri))
   (route/not-found "gobbledygook"))
 
