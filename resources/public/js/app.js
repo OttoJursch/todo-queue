@@ -27,7 +27,7 @@ window.onload = function(){
       htmlString += "<input type='text' placeholder='Add a New Resource' id='resource-box'/>";
       htmlString += "<button type='button' id='resource-addition-button'>Add Resource</button>";
       htmlString += "<input type='number' id='hour-box' placeholder='00'/> Hours<br> <input type='number' id='minute-box' placeholder='00'/> Minutes<br>";
-      htmlString += "<label>Due Date</label><input type='date' id='due-date'/>";
+      htmlString += "<label>Due Date</label><input type='date' placeholder='MM/DD/YYYY' id='due-date'/>";
       htmlString += "<h3>Prerequisite Tasks</h3>";
       htmlString+="<ul id='preq-task-list' style='list-style-option:none'>";
       for(var b = 0; b < allData.tasks.length; b++){
@@ -47,8 +47,9 @@ window.onload = function(){
       addResource.onclick = function(e){
         var resBox = document.getElementById('resource-box');
         var list = document.getElementById('add-task-list');
-        if(resBox.value.trim() !== '' && (resBox.value.trim() in allData.resources)){
+        if(resBox.value.trim() !== '' && !((new Set(allData.resources)).has(resBox.value.trim()))){
           list.innerHTML += "<li><input type='checkbox' value='"+resBox.value.trim()+"'/>"+resBox.value+"<br></li>";
+          allData.resources.push(resBox.value.trim());
           //TODO Add code to POST value to server/database
           //var request = new XMLHttpRequest();
           //request.open("POST","/addresource?resource=resBox.value,false);
@@ -66,8 +67,10 @@ window.onload = function(){
         var date = moment();
         var timeTilTask1 = moment(task1.date).diff(date);
         var timeTilTask2 = moment(task2.date).diff(date);
-        var task1Total = task1.importance;
-        var task2Total = task2.importance;//+ .8 * tilDueDate
+        var timePercentTask1 = timeTilTask1 / task1.time;
+        var timePercentTask2 = timeTilTask2 / task2.time;
+        var task1Total = task1.importance * timePercentTask1;
+        var task2Total = task2.importance * timePercentTask2;
         return task1Total - task2Total;
       };
       var getNewTask = function(e){
@@ -81,7 +84,7 @@ window.onload = function(){
         var bool = true;
         for(var x = allData.tasks.length - 1; x >= 0; x--){
            for(var a = 0; a < allData.tasks[x].resources.length; a++){
-             bool = allData.tasks[x].resources[a] in availableResources; 
+             bool = (new Set(availableResources)).has(allData.tasks[x].resources[a]); 
            } 
            if(bool){
              doTask(allData.tasks[x]);
@@ -169,26 +172,29 @@ window.onload = function(){
       var createTask = document.getElementById('create-new-task');
       createTask.onclick = function(){
         var resourceList = [];
-        var checkBoxes = document.getElementById('add-resource-list');
+        var checkBoxes = document.getElementById('add-task-list');
         var time = parseInt(document.getElementById('hour-box').value) * 60 + parseInt(document.getElementById('minute-box').value); 
-        var dueDate = moment(document.getElementById('due-date').value); 
-        var prereqs = document.getElementById('prereq-task-list');
+        var dueDate = moment(document.getElementById('due-date').value).format('MM-DD-YYYY'); 
+        var prereqs = document.getElementById('preq-task-list');
         var prereqList = [];
         for(var counter = 0; counter < prereqs.childNodes.length; counter++){
           var isPrereq = prereqs.childNodes[counter].firstChild.checked;
           if(checked){
             prereqList.push(prereqs.childNodes[counter].firstChild.value);
           }
+        }
         for(var index = 0; index < checkBoxes.childNodes.length; index++){
           var checked = checkBoxes.childNodes[index].firstChild.checked;
           if(checked){
-            resourceList.push(checkBoxes.childNodes[index].firstChild.value;
+            resourceList.push(checkBoxes.childNodes[index].firstChild.value);
           }
         } 
         var theTask = {resources : resourceList, time : time, date : dueDate, prereq : prereqList};
         var msg = JSON.stringify(theTask);
         //TODO code to send the new JSON message to the server
         allData.tasks.push(theTask);
+        console.log(theTask);
+        console.log(theTask.date);
       }
     }else{
       console.log("Incorrect password");
