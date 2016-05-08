@@ -28,6 +28,7 @@ window.onload = function(){
       htmlString += "<button type='button' id='resource-addition-button'>Add Resource</button>";
       htmlString += "<input type='number' id='hour-box' placeholder='00'/> Hours<br> <input type='number' id='minute-box' placeholder='00'/> Minutes<br>";
       htmlString += "<label>Due Date</label><input type='date' placeholder='MM/DD/YYYY' id='due-date'/>";
+      htmlString += "<label>Due Date</label><input type='date' id='due-date'/>";
       htmlString += "<h3>Prerequisite Tasks</h3>";
       htmlString+="<ul id='preq-task-list' style='list-style-option:none'>";
       for(var b = 0; b < allData.tasks.length; b++){
